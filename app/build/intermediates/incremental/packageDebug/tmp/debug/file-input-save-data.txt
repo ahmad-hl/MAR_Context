@@ -1,7 +1,0 @@
-#Internal package file, do not edit.
-#Wed Jan 27 22:24:24 CST 2021
-0.baseType=DIRECTORY
-0.base=E\:\\D11project\\MAR_Context\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\0
-0.path=classes.dex
-0.set=DEX
-count=1

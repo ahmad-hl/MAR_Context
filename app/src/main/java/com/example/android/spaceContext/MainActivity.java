@@ -16,15 +16,20 @@
 
 package com.example.android.spaceContext;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
         implements SensorEventListener {
@@ -40,6 +45,7 @@ public class MainActivity extends AppCompatActivity
     float[] mAccelerometerData = new float[3];
     float[] mMagnetometerData = new float[3];
 
+    String ACTION_CONTEXT_ACCEL= "ACTION_CONTEXT_ACCEL";
     // TextViews to display current sensor values.
     private TextView mTextSensorAzimuth;
     private TextView mTextSensorPitch;
@@ -71,6 +77,9 @@ public class MainActivity extends AppCompatActivity
                 Sensor.TYPE_ACCELEROMETER);
         mSensorMagnetometer = mSensorManager.getDefaultSensor(
                 Sensor.TYPE_MAGNETIC_FIELD);
+
+        IntentFilter filter = new IntentFilter(ACTION_CONTEXT_ACCEL);
+        registerReceiver(orientBCastReceiver, filter);
     }
 
     /**
@@ -107,42 +116,73 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        unregisterReceiver(orientBCastReceiver);
+    }
+
+    @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         int sensorType = sensorEvent.sensor.getType();
         switch (sensorType) {
             case Sensor.TYPE_ACCELEROMETER:
                 mAccelerometerData = sensorEvent.values.clone();
+                Intent accelData = new Intent(ACTION_CONTEXT_ACCEL);
+                accelData.putExtra("type","ACCEL");
+                accelData.putExtra(ACTION_CONTEXT_ACCEL,mAccelerometerData);
+                sendBroadcast(accelData);
+
                 break;
             case Sensor.TYPE_MAGNETIC_FIELD:
                 mMagnetometerData = sensorEvent.values.clone();
+                Intent magnetData = new Intent(ACTION_CONTEXT_ACCEL);
+                magnetData.putExtra("type","MAGNET");
+                magnetData.putExtra(ACTION_CONTEXT_ACCEL,mMagnetometerData);
+                sendBroadcast(magnetData);
                 break;
             default:
                 return;
         }
 
-        float[] rotationMatrix = new float[9];
-        boolean rotationOK = SensorManager.getRotationMatrix(rotationMatrix,
-                null, mAccelerometerData, mMagnetometerData);
-
-        float orientationValues[] = new float[3];
-        if (rotationOK) {
-            SensorManager.getOrientation(rotationMatrix, orientationValues);
-
-            // Create and execute the background task.
-            //dTask = new DummyTask(this);
-            //float orientationValues[] = dTask.execute(sensorEvent).get();
-            float azimuth = orientationValues[0];
-            float pitch = orientationValues[1];
-            float roll = orientationValues[2];
-
-            mTextSensorAzimuth.setText(getResources().getString(
-                    R.string.value_format, azimuth));
-            mTextSensorPitch.setText(getResources().getString(
-                    R.string.value_format, pitch));
-            mTextSensorRoll.setText(getResources().getString(
-                    R.string.value_format, roll));
-        }
     }
+
+    private BroadcastReceiver orientBCastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+//            Bundle extras = getIntent().getExtras();
+//            String type = intent.getStringExtra("type");
+//            float[] data = extras.getFloatArray(ACTION_CONTEXT_ACCEL);
+//            if(type.equals("ACCEL")){
+//                mAccelerometerData = data;
+//            }else{
+//                mMagnetometerData = data;
+//            }
+
+            float[] rotationMatrix = new float[9];
+            boolean rotationOK = SensorManager.getRotationMatrix(rotationMatrix,
+                    null, mAccelerometerData, mMagnetometerData);
+
+            float orientationValues[] = new float[3];
+            if (rotationOK) {
+                SensorManager.getOrientation(rotationMatrix, orientationValues);
+
+                float azimuth = orientationValues[0];
+                float pitch = orientationValues[1];
+                float roll = orientationValues[2];
+
+                mTextSensorAzimuth.setText(getResources().getString(
+                        R.string.value_format, azimuth));
+                mTextSensorPitch.setText(getResources().getString(
+                        R.string.value_format, pitch));
+                mTextSensorRoll.setText(getResources().getString(
+                        R.string.value_format, roll));
+            }
+        }
+    };
+
+
 
     /**
      * Must be implemented to satisfy the SensorEventListener interface;
