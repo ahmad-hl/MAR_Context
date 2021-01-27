@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MAR_Context.iml" filepath="$PROJECT_DIR$/.idea/modules/MAR_Context.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/MAR_Context.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/MAR_Context.app.iml" />
+    </modules>
+  </component>
+</project>
