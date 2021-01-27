@@ -1,0 +1,9 @@
+com/example/android/spaceContext/DummyTask.java
+ com.example.android.spaceContext.DummyTask
+com/example/android/spaceContext/OrientationBCastReceiver.java
+ com.example.android.spaceContext.OrientationBCastReceiver
+com/example/android/spaceContext/BuildConfig.java
+ com.example.android.spaceContext.BuildConfig
+com/example/android/spaceContext/MainActivity.java
+ com.example.android.spaceContext.MainActivity
+ com.example.android.spaceContext.MainActivity$1

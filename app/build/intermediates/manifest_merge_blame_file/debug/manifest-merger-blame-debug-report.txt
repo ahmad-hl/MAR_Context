@@ -1,0 +1,73 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<!--
+3 Copyright 2017 Google Inc.
+4
+5Licensed under the Apache License, Version 2.0 (the "License");
+6you may not use this file except in compliance with the License.
+7You may obtain a copy of the License at
+8
+9    http://www.apache.org/licenses/LICENSE-2.0
+10
+11Unless required by applicable law or agreed to in writing, software
+12distributed under the License is distributed on an "AS IS" BASIS,
+13WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+14See the License for the specific language governing permissions and
+15limitations under the License.
+16-->
+17<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+18    package="com.example.android.tiltspot"
+19    android:versionCode="1"
+20    android:versionName="1.0" >
+21
+22    <uses-sdk
+23        android:minSdkVersion="15"
+23-->E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml
+24        android:targetSdkVersion="26" />
+24-->E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml
+25
+26    <application
+26-->E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:18:5-32:19
+27        android:allowBackup="true"
+27-->E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:19:9-35
+28        android:debuggable="true"
+29        android:icon="@mipmap/ic_launcher"
+29-->E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:20:9-43
+30        android:label="@string/app_name"
+30-->E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:21:9-41
+31        android:roundIcon="@mipmap/ic_launcher_round"
+31-->E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:22:9-54
+32        android:supportsRtl="true"
+32-->E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:23:9-35
+33        android:testOnly="true"
+34        android:theme="@style/AppTheme" >
+34-->E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:24:9-40
+35        <activity android:name="com.example.android.spaceContext.MainActivity" >
+35-->E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:25:9-31:20
+35-->E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:25:19-79
+36            <intent-filter>
+36-->E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:26:13-30:29
+37                <action android:name="android.intent.action.MAIN" />
+37-->E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:27:17-68
+37-->E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:27:25-66
+38
+39                <category android:name="android.intent.category.LAUNCHER" />
+39-->E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:29:17-76
+39-->E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:29:27-74
+40            </intent-filter>
+41        </activity>
+42
+43        <meta-data
+43-->[com.android.support:appcompat-v7:26.1.0] C:\Users\Engah\.gradle\caches\transforms-2\files-2.1\22201284f06052f57e5af9bcb65a52a3\appcompat-v7-26.1.0\AndroidManifest.xml:26:9-28:38
+44            android:name="android.support.VERSION"
+44-->[com.android.support:appcompat-v7:26.1.0] C:\Users\Engah\.gradle\caches\transforms-2\files-2.1\22201284f06052f57e5af9bcb65a52a3\appcompat-v7-26.1.0\AndroidManifest.xml:27:13-51
+45            android:value="26.1.0" />
+45-->[com.android.support:appcompat-v7:26.1.0] C:\Users\Engah\.gradle\caches\transforms-2\files-2.1\22201284f06052f57e5af9bcb65a52a3\appcompat-v7-26.1.0\AndroidManifest.xml:28:13-35
+46        <meta-data
+46-->[android.arch.lifecycle:runtime:1.0.0] C:\Users\Engah\.gradle\caches\transforms-2\files-2.1\940f5e7524450f821fdfed84e74cdc3a\runtime-1.0.0\AndroidManifest.xml:25:9-27:47
+47            android:name="android.arch.lifecycle.VERSION"
+47-->[android.arch.lifecycle:runtime:1.0.0] C:\Users\Engah\.gradle\caches\transforms-2\files-2.1\940f5e7524450f821fdfed84e74cdc3a\runtime-1.0.0\AndroidManifest.xml:26:13-58
+48            android:value="27.0.0-SNAPSHOT" />
+48-->[android.arch.lifecycle:runtime:1.0.0] C:\Users\Engah\.gradle\caches\transforms-2\files-2.1\940f5e7524450f821fdfed84e74cdc3a\runtime-1.0.0\AndroidManifest.xml:27:13-44
+49    </application>
+50
+51</manifest>
