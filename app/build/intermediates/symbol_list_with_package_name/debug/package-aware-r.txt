@@ -315,6 +315,9 @@ bool abc_allow_stacked_button_bar
 bool abc_config_actionMenuItemAllCaps
 bool abc_config_closeDialogWhenTouchOutside
 bool abc_config_showMenuShortcutsWhenKeyboardPresent
+bool accessibility_access
+bool internalstorage
+bool standalone
 color abc_background_cache_hint_selector_material_dark
 color abc_background_cache_hint_selector_material_light
 color abc_btn_colored_borderless_text_material
@@ -597,6 +600,8 @@ drawable abc_textfield_search_activated_mtrl_alpha
 drawable abc_textfield_search_default_mtrl_alpha
 drawable abc_textfield_search_material
 drawable abc_vector_test
+drawable ic_launcher_background
+drawable ic_launcher_foreground
 drawable notification_action_background
 drawable notification_bg
 drawable notification_bg_low

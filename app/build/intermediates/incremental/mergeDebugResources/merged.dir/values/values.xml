@@ -98,6 +98,9 @@
     <bool name="abc_config_actionMenuItemAllCaps">true</bool>
     <bool name="abc_config_closeDialogWhenTouchOutside">true</bool>
     <bool name="abc_config_showMenuShortcutsWhenKeyboardPresent">false</bool>
+    <item format="boolean" name="accessibility_access" type="bool">false</item>
+    <item format="boolean" name="internalstorage" type="bool">true</item>
+    <item format="boolean" name="standalone" type="bool">false</item>
     <color name="abc_input_method_navigation_guard">@android:color/black</color>
     <color name="abc_search_url_text_normal">#7fa87f</color>
     <color name="abc_search_url_text_pressed">@android:color/black</color>

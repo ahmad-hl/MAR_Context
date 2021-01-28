@@ -17,10 +17,13 @@
 package com.example.android.spaceContext;
 
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -28,8 +31,17 @@ import android.hardware.SensorManager;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity
         implements SensorEventListener {
@@ -45,7 +57,6 @@ public class MainActivity extends AppCompatActivity
     float[] mAccelerometerData = new float[3];
     float[] mMagnetometerData = new float[3];
 
-    String ACTION_CONTEXT_ACCEL= "ACTION_CONTEXT_ACCEL";
     // TextViews to display current sensor values.
     private TextView mTextSensorAzimuth;
     private TextView mTextSensorPitch;
@@ -55,6 +66,9 @@ public class MainActivity extends AppCompatActivity
     // be interpreted as 0. This value is the amount of acceptable
     // non-zero drift.
     private static final float VALUE_DRIFT = 0.05f;
+    //OrientationBCastReceiver orientationBCastReceiver = new OrientationBCastReceiver();
+    private static SQLiteDatabase database = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,8 +92,11 @@ public class MainActivity extends AppCompatActivity
         mSensorMagnetometer = mSensorManager.getDefaultSensor(
                 Sensor.TYPE_MAGNETIC_FIELD);
 
-        IntentFilter filter = new IntentFilter(ACTION_CONTEXT_ACCEL);
+        IntentFilter filter = new IntentFilter(Constants.ACTION_CONTEXT_ORIENTATION);
         registerReceiver(orientBCastReceiver, filter);
+        DatabaseHelper dbHelper = new DatabaseHelper(getApplicationContext(), Constants.database_tables,Constants.table_fields );
+        database = dbHelper.getWritableDatabase();
+
     }
 
     /**
@@ -92,10 +109,6 @@ public class MainActivity extends AppCompatActivity
 
         // Listeners for the sensors are registered in this callback and
         // can be unregistered in onStop().
-        //
-        // Check to ensure sensors are available before registering listeners.
-        // Both listeners are registered with a "normal" amount of delay
-        // (SENSOR_DELAY_NORMAL).
         if (mSensorAccelerometer != null) {
             mSensorManager.registerListener(this, mSensorAccelerometer,
                     SensorManager.SENSOR_DELAY_NORMAL);
@@ -120,6 +133,7 @@ public class MainActivity extends AppCompatActivity
         super.onDestroy();
 
         unregisterReceiver(orientBCastReceiver);
+//        unregisterReceiver(orientationBCastReceiver);
     }
 
     @Override
@@ -128,24 +142,33 @@ public class MainActivity extends AppCompatActivity
         switch (sensorType) {
             case Sensor.TYPE_ACCELEROMETER:
                 mAccelerometerData = sensorEvent.values.clone();
-                Intent accelData = new Intent(ACTION_CONTEXT_ACCEL);
-                accelData.putExtra("type","ACCEL");
-                accelData.putExtra(ACTION_CONTEXT_ACCEL,mAccelerometerData);
+                Intent accelData = new Intent(Constants.ACTION_CONTEXT_ORIENTATION);
+                accelData.putExtra("type",Constants.ACCEL_FLOAT_DATA);
+                accelData.putExtra(Constants.ACTION_CONTEXT_ORIENTATION,mAccelerometerData);
                 sendBroadcast(accelData);
 
                 break;
             case Sensor.TYPE_MAGNETIC_FIELD:
                 mMagnetometerData = sensorEvent.values.clone();
-                Intent magnetData = new Intent(ACTION_CONTEXT_ACCEL);
-                magnetData.putExtra("type","MAGNET");
-                magnetData.putExtra(ACTION_CONTEXT_ACCEL,mMagnetometerData);
+                Intent magnetData = new Intent(Constants.ACTION_CONTEXT_ORIENTATION);
+                magnetData.putExtra("type",Constants.MAGNET_FLOAT_DATA);
+                magnetData.putExtra(Constants.ACTION_CONTEXT_ORIENTATION,mMagnetometerData);
                 sendBroadcast(magnetData);
                 break;
             default:
                 return;
         }
-
     }
+
+
+    /**
+     * Must be implemented to satisfy the SensorEventListener interface;
+     * unused in this app.
+     */
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+    }
+
 
     private BroadcastReceiver orientBCastReceiver = new BroadcastReceiver() {
         @Override
@@ -153,13 +176,14 @@ public class MainActivity extends AppCompatActivity
 
 //            Bundle extras = getIntent().getExtras();
 //            String type = intent.getStringExtra("type");
-//            float[] data = extras.getFloatArray(ACTION_CONTEXT_ACCEL);
+//            float[] data = extras.getFloatArray(Constants.ACTION_CONTEXT_ORIENTATION);
 //            if(type.equals("ACCEL")){
 //                mAccelerometerData = data;
 //            }else{
 //                mMagnetometerData = data;
 //            }
 
+            //Compute the orientation
             float[] rotationMatrix = new float[9];
             boolean rotationOK = SensorManager.getRotationMatrix(rotationMatrix,
                     null, mAccelerometerData, mMagnetometerData);
@@ -171,6 +195,16 @@ public class MainActivity extends AppCompatActivity
                 float azimuth = orientationValues[0];
                 float pitch = orientationValues[1];
                 float roll = orientationValues[2];
+
+                //Insert orientation Data into SQLite DB
+                ContentValues values = new ContentValues();
+                values.put(Orientation.COLUMN_AZIMUTH, azimuth);
+                values.put(Orientation.COLUMN_PITCH, pitch);
+                values.put(Orientation.COLUMN_ROLL, roll);
+
+                // Insert the new row, returning the primary key value of the new row
+                long newRowId = database.insert(Orientation.TABLE_NAME, null, values);
+                Toast.makeText(context, "Orientation is Saved--RawID: "+newRowId,Toast.LENGTH_LONG).show();
 
                 mTextSensorAzimuth.setText(getResources().getString(
                         R.string.value_format, azimuth));
@@ -184,11 +218,4 @@ public class MainActivity extends AppCompatActivity
 
 
 
-    /**
-     * Must be implemented to satisfy the SensorEventListener interface;
-     * unused in this app.
-     */
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int i) {
-    }
 }

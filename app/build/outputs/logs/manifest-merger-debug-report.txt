@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:15:1-34:12
-INJECTED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:15:1-34:12
-INJECTED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:15:1-34:12
-INJECTED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:15:1-34:12
+ADDED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:15:1-35:12
+INJECTED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:15:1-35:12
+INJECTED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:15:1-35:12
+INJECTED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:15:1-35:12
 MERGED from [com.android.support:appcompat-v7:26.1.0] C:\Users\Engah\.gradle\caches\transforms-2\files-2.1\22201284f06052f57e5af9bcb65a52a3\appcompat-v7-26.1.0\AndroidManifest.xml:17:1-31:12
 MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\Engah\.gradle\caches\transforms-2\files-2.1\10dffda92accef4d4da5b18a8f434c6f\constraint-layout-1.0.2\AndroidManifest.xml:2:1-11:12
 MERGED from [com.android.support:animated-vector-drawable:26.1.0] C:\Users\Engah\.gradle\caches\transforms-2\files-2.1\a3be39181733312b7186ee91d3891a94\animated-vector-drawable-26.1.0\AndroidManifest.xml:17:1-28:12
@@ -15,25 +15,29 @@ MERGED from [com.android.support:support-core-utils:26.1.0] C:\Users\Engah\.grad
 MERGED from [com.android.support:support-core-ui:26.1.0] C:\Users\Engah\.gradle\caches\transforms-2\files-2.1\cf8bbde758eab05c95428ec263cd06bc\support-core-ui-26.1.0\AndroidManifest.xml:17:1-31:12
 MERGED from [com.android.support:support-compat:26.1.0] C:\Users\Engah\.gradle\caches\transforms-2\files-2.1\45642fd0a6138345441bf0a6b6a7b84e\support-compat-26.1.0\AndroidManifest.xml:17:1-31:12
 MERGED from [android.arch.lifecycle:runtime:1.0.0] C:\Users\Engah\.gradle\caches\transforms-2\files-2.1\940f5e7524450f821fdfed84e74cdc3a\runtime-1.0.0\AndroidManifest.xml:17:1-30:12
-INJECTED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:15:1-34:12
-INJECTED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:15:1-34:12
-INJECTED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:15:1-34:12
+INJECTED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:15:1-35:12
+INJECTED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:15:1-35:12
+INJECTED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:15:1-35:12
 	package
 		ADDED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:16:11-53
 		INJECTED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml
 		INJECTED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml
 	android:versionName
 		INJECTED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml
-		ADDED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:15:1-34:12
+		ADDED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:15:1-35:12
 		INJECTED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml
 	android:versionCode
 		INJECTED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml
-		ADDED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:15:1-34:12
+		ADDED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:15:1-35:12
 		INJECTED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml
 	xmlns:android
 		ADDED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:15:11-69
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:18:5-81
+	android:name
+		ADDED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:18:22-78
 application
-ADDED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:18:5-32:19
+ADDED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:19:5-33:19
 MERGED from [com.android.support:appcompat-v7:26.1.0] C:\Users\Engah\.gradle\caches\transforms-2\files-2.1\22201284f06052f57e5af9bcb65a52a3\appcompat-v7-26.1.0\AndroidManifest.xml:25:5-29:19
 MERGED from [com.android.support:appcompat-v7:26.1.0] C:\Users\Engah\.gradle\caches\transforms-2\files-2.1\22201284f06052f57e5af9bcb65a52a3\appcompat-v7-26.1.0\AndroidManifest.xml:25:5-29:19
 MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\Engah\.gradle\caches\transforms-2\files-2.1\10dffda92accef4d4da5b18a8f434c6f\constraint-layout-1.0.2\AndroidManifest.xml:9:5-20
@@ -57,31 +61,31 @@ MERGED from [com.android.support:support-compat:26.1.0] C:\Users\Engah\.gradle\c
 MERGED from [android.arch.lifecycle:runtime:1.0.0] C:\Users\Engah\.gradle\caches\transforms-2\files-2.1\940f5e7524450f821fdfed84e74cdc3a\runtime-1.0.0\AndroidManifest.xml:24:5-28:19
 MERGED from [android.arch.lifecycle:runtime:1.0.0] C:\Users\Engah\.gradle\caches\transforms-2\files-2.1\940f5e7524450f821fdfed84e74cdc3a\runtime-1.0.0\AndroidManifest.xml:24:5-28:19
 	android:supportsRtl
-		ADDED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:23:9-35
+		ADDED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:24:9-35
 	android:label
-		ADDED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:21:9-41
+		ADDED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:22:9-41
 	android:roundIcon
-		ADDED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:22:9-54
+		ADDED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:23:9-54
 	android:icon
-		ADDED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:20:9-43
+		ADDED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:21:9-43
 	android:allowBackup
-		ADDED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:19:9-35
+		ADDED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:20:9-35
 	android:theme
-		ADDED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:24:9-40
+		ADDED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:25:9-40
 activity#com.example.android.spaceContext.MainActivity
-ADDED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:25:9-31:20
+ADDED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:26:9-32:20
 	android:name
-		ADDED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:25:19-79
+		ADDED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:26:19-79
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:26:13-30:29
+ADDED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:27:13-31:29
 action#android.intent.action.MAIN
-ADDED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:27:17-68
+ADDED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:28:17-68
 	android:name
-		ADDED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:27:25-66
+		ADDED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:28:25-66
 category#android.intent.category.LAUNCHER
-ADDED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:29:17-76
+ADDED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:30:17-76
 	android:name
-		ADDED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:29:27-74
+		ADDED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml:30:27-74
 uses-sdk
 INJECTED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from E:\D11project\MAR_Context\app\src\main\AndroidManifest.xml
