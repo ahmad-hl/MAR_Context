@@ -11,6 +11,9 @@ import android.os.Environment;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
+
+import com.example.android.spaceContext.R;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,22 +39,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private String databaseName;
     private String[] databaseTables;
     private String[] tableFields;
-    private int newVersion;
+    private int databaseVersion;
     private CursorFactory cursorFactory;
     private SQLiteDatabase database;
     private Context mContext;
 
     private HashMap<String, String> renamed_columns = new HashMap<>();
 
-    public DatabaseHelper(Context context, String[] database_tables, String[] table_fields) {
-        super(context, Constants.DATABASE_NAME, null, Constants.DATABASE_VERSION);
+    public DatabaseHelper(Context context, String database_name,CursorFactory cursor_factory, int new_version, String[] database_tables, String[] table_fields) {
+        super(context, database_name, cursor_factory, new_version);
         mContext = context;
-        databaseTables = database_tables;
+        this.databaseName = database_name;
         tableFields = table_fields;
-    }
-
-    public void setRenamedColumns(HashMap<String, String> renamed) {
-        renamed_columns = renamed;
+        this.cursorFactory = cursor_factory;
+        this.databaseVersion = new_version;
+        databaseTables = database_tables;
     }
 
     @Override
@@ -60,7 +62,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         for (int i = 0; i < databaseTables.length; i++) {
             db.execSQL("CREATE TABLE IF NOT EXISTS " + databaseTables[i] + " (" + tableFields[i] + ");");
         }
-        db.setVersion(newVersion);
+        db.setVersion(databaseVersion);
     }
 
     @Override
@@ -156,4 +158,102 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return columns;
     }
+
+
+    @Override
+    public synchronized SQLiteDatabase getWritableDatabase() {
+        try {
+            if (database != null) {
+                if (!database.isOpen()) {
+                    database = null;
+                } else if (!database.isReadOnly()) {
+                    return database;
+                }
+            }
+
+            database = getDatabaseFile();
+            if (database == null) return null;
+
+            int current_version = database.getVersion();
+            if (current_version != databaseVersion) {
+                database.beginTransaction();
+                try {
+                    if (current_version == 0) {
+                        onCreate(database);
+                    } else {
+                        onUpgrade(database, current_version, databaseVersion);
+                    }
+                    database.setTransactionSuccessful();
+                } finally {
+                    database.endTransaction();
+                }
+            }
+            return database;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    @Override
+    public synchronized SQLiteDatabase getReadableDatabase() {
+        try {
+            if (database != null) {
+                if (!database.isOpen()) {
+                    database = null;
+                }
+            }
+            database = getDatabaseFile();
+            return database;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * Retuns the SQLiteDatabase
+     *
+     * @return
+     */
+    private synchronized SQLiteDatabase getDatabaseFile() {
+        try {
+            File aware_folder;
+            if (mContext.getResources().getBoolean(R.bool.internalstorage)) {
+                // Internal storage.  This is not acceassible to any other apps and is removed once
+                // app is uninstalled.  Plugins can't use it.  Hard-coded to off, only change if
+                // you know what you are doing.  Beware!
+                aware_folder = mContext.getFilesDir();
+            } else if (!mContext.getResources().getBoolean(R.bool.standalone)) {
+                // sdcard/AWARE/ (shareable, does not delete when uninstalling)
+                aware_folder = new File(Environment.getExternalStoragePublicDirectory("MARContext").toString());
+            } else {
+                if (isEmulator()) {
+                    aware_folder = mContext.getFilesDir();
+                } else {
+                    // sdcard/Android/<app_package_name>/MARContext/ (not shareable, deletes when uninstalling package)
+                    aware_folder = new File(ContextCompat.getExternalFilesDirs(mContext, null)[0] + "/MARContext");
+                }
+            }
+
+            if (!aware_folder.exists()) {
+                aware_folder.mkdirs();
+            }
+
+            database = SQLiteDatabase.openOrCreateDatabase(new File(aware_folder, this.databaseName).getPath(), this.cursorFactory);
+            return database;
+        } catch (SQLiteException e) {
+            return null;
+        }
+    }
+
+    public static boolean isEmulator() {
+        return Build.FINGERPRINT.startsWith("generic")
+                || Build.FINGERPRINT.startsWith("unknown")
+                || Build.MODEL.contains("google_sdk")
+                || Build.MODEL.contains("Emulator")
+                || Build.MODEL.contains("Android SDK built for x86")
+                || Build.MANUFACTURER.contains("Genymotion")
+                || (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic"))
+                || "google_sdk".equals(Build.PRODUCT);
+    }
+
 }

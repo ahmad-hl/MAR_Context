@@ -22,26 +22,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import com.example.android.spaceContext.Orientation_Provider.Orientation_Data;
 
 public class MainActivity extends AppCompatActivity
         implements SensorEventListener {
@@ -66,9 +58,8 @@ public class MainActivity extends AppCompatActivity
     // be interpreted as 0. This value is the amount of acceptable
     // non-zero drift.
     private static final float VALUE_DRIFT = 0.05f;
-    //OrientationBCastReceiver orientationBCastReceiver = new OrientationBCastReceiver();
+    private DatabaseHelper dbHelper;
     private static SQLiteDatabase database = null;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,8 +85,7 @@ public class MainActivity extends AppCompatActivity
 
         IntentFilter filter = new IntentFilter(Constants.ACTION_CONTEXT_ORIENTATION);
         registerReceiver(orientBCastReceiver, filter);
-        DatabaseHelper dbHelper = new DatabaseHelper(getApplicationContext(), Constants.database_tables,Constants.table_fields );
-        database = dbHelper.getWritableDatabase();
+        dbHelper = new DatabaseHelper(getApplicationContext(), Orientation_Provider.DATABASE_NAME, null, 1, Orientation_Provider.DATABASE_TABLES,Orientation_Provider.TABLES_FIELDS);
 
     }
 
@@ -198,13 +188,13 @@ public class MainActivity extends AppCompatActivity
 
                 //Insert orientation Data into SQLite DB
                 ContentValues values = new ContentValues();
-                values.put(Orientation.COLUMN_AZIMUTH, azimuth);
-                values.put(Orientation.COLUMN_PITCH, pitch);
-                values.put(Orientation.COLUMN_ROLL, roll);
+                values.put(Orientation_Provider.Orientation_Data.COLUMN_AZIMUTH, azimuth);
+                values.put(Orientation_Provider.Orientation_Data.COLUMN_PITCH, pitch);
+                values.put(Orientation_Provider.Orientation_Data.COLUMN_ROLL, roll);
 
                 // Insert the new row, returning the primary key value of the new row
-                long newRowId = database.insert(Orientation.TABLE_NAME, null, values);
-                Toast.makeText(context, "Orientation is Saved--RawID: "+newRowId,Toast.LENGTH_LONG).show();
+                Uri orientDataUri = getContentResolver().insert(Orientation_Data.CONTENT_URI,values );
+                Toast.makeText(context, orientDataUri.toString(),Toast.LENGTH_LONG).show();
 
                 mTextSensorAzimuth.setText(getResources().getString(
                         R.string.value_format, azimuth));

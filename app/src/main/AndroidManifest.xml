@@ -30,6 +30,12 @@ limitations under the License. -->
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <provider
+            android:name="com.example.android.spaceContext.Orientation_Provider"
+            android:authorities="com.example.android.spaceContext.provider.orientation"
+            android:exported="true"
+            android:syncable="true" />
     </application>
 
 </manifest>
