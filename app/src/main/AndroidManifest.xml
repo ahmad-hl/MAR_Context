@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License. -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.example.android.spaceContext">
+          package="com.spacecontext">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <application
@@ -23,7 +23,7 @@ limitations under the License. -->
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.example.android.spaceContext.MainActivity">
+        <activity android:name="com.spacecontext.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -32,8 +32,8 @@ limitations under the License. -->
         </activity>
 
         <provider
-            android:name="com.example.android.spaceContext.Orientation_Provider"
-            android:authorities="com.example.android.spaceContext.provider.orientation"
+            android:name="com.spacecontext.providers.Orientation_Provider"
+            android:authorities="com.spacecontext.provider"
             android:exported="true"
             android:syncable="true" />
     </application>

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.android.spaceContext;
+package com.spacecontext;
 
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
@@ -33,7 +33,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.android.spaceContext.Orientation_Provider.Orientation_Data;
+import com.spacecontext.providers.Orientation_Provider;
+import com.spacecontext.providers.Orientation_Provider.Orientation_Data;
 
 public class MainActivity extends AppCompatActivity
         implements SensorEventListener {

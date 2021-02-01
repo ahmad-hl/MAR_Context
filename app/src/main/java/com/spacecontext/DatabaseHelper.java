@@ -1,4 +1,4 @@
-package com.example.android.spaceContext;
+package com.spacecontext;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -11,8 +11,6 @@ import android.os.Environment;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
-
-import com.example.android.spaceContext.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;

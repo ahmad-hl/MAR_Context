@@ -1,4 +1,4 @@
-package com.example.android.spaceContext;
+package com.spacecontext.providers;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;
@@ -14,8 +14,10 @@ import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.spacecontext.DatabaseHelper;
+
 public class Orientation_Provider extends ContentProvider {
-    public static String AUTHORITY = "com.example.android.spaceContext.orientation";
+    public static String AUTHORITY = "com.spacecontext.providers";
     private DatabaseHelper dbHelper;
     private static SQLiteDatabase database;
     public static String DATABASE_NAME = "orientation.db";
@@ -28,20 +30,11 @@ public class Orientation_Provider extends ContentProvider {
     // code for query paths
     private final int ORIENT_DATA = 1;
     private final int ORIENT_DATA_ID = 2;
-    /**
-     * Returns the provider authority that is dynamic
-     * @return
-     */
-    public static String getAuthority(Context context) {
-//        AUTHORITY = context.getPackageName() + ".provider.orientation";
-        AUTHORITY = "com.example.android.spaceContext.provider.orientation";
-        return AUTHORITY;
-    }
 
     @Override
     public boolean onCreate() {
 //        AUTHORITY = getContext().getPackageName() + ".provider.orientation";
-        AUTHORITY = "com.example.android.spaceContext.provider.orientation";
+        AUTHORITY = "com.spacecontext.provider";
         sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         sUriMatcher.addURI(Orientation_Provider.AUTHORITY, DATABASE_TABLES[0], ORIENT_DATA);
         sUriMatcher.addURI(Orientation_Provider.AUTHORITY, DATABASE_TABLES[0] + "/#", ORIENT_DATA_ID);

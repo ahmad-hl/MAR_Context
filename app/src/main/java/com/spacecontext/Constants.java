@@ -1,4 +1,4 @@
-package com.example.android.spaceContext;
+package com.spacecontext;
 
 public class Constants {
 
