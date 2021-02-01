@@ -222,13 +222,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 aware_folder = mContext.getFilesDir();
             } else if (!mContext.getResources().getBoolean(R.bool.standalone)) {
                 // sdcard/AWARE/ (shareable, does not delete when uninstalling)
-                aware_folder = new File(Environment.getExternalStoragePublicDirectory("MARContext").toString());
+                aware_folder = new File(Environment.getExternalStoragePublicDirectory("spacecontext").toString());
             } else {
                 if (isEmulator()) {
                     aware_folder = mContext.getFilesDir();
                 } else {
                     // sdcard/Android/<app_package_name>/MARContext/ (not shareable, deletes when uninstalling package)
-                    aware_folder = new File(ContextCompat.getExternalFilesDirs(mContext, null)[0] + "/MARContext");
+                    aware_folder = new File(ContextCompat.getExternalFilesDirs(mContext, null)[0] + "/spacecontext");
                 }
             }
 

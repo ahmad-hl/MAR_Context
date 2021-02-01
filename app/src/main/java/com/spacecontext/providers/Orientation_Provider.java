@@ -17,7 +17,7 @@ import android.support.annotation.Nullable;
 import com.spacecontext.DatabaseHelper;
 
 public class Orientation_Provider extends ContentProvider {
-    public static String AUTHORITY = "com.spacecontext.providers";
+    public static String AUTHORITY = "com.spacecontext.provider";
     private DatabaseHelper dbHelper;
     private static SQLiteDatabase database;
     public static String DATABASE_NAME = "orientation.db";
@@ -152,10 +152,9 @@ public class Orientation_Provider extends ContentProvider {
         public static final Uri CONTENT_URI = Uri.parse("content://"
                 + Orientation_Provider.AUTHORITY + "/orientation");
 
-        public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.spacontext.orientation.data";
-        public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.spacontext.orientation.data";
+        public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.spacecontext.orientation.data";
+        public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.spacecontext.orientation.data";
 
-        public static final String TABLE_NAME = "orientation";
         public static final String COLUMN_AZIMUTH = "azimuth";
         public static final String COLUMN_PITCH = "pitch";
         public static final String COLUMN_ROLL = "roll";

@@ -27,12 +27,17 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.location.GpsStatus;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.spacecontext.providers.Locations_Provider;
+import com.spacecontext.providers.Locations_Provider.Locations_Data;
 import com.spacecontext.providers.Orientation_Provider;
 import com.spacecontext.providers.Orientation_Provider.Orientation_Data;
 
@@ -41,10 +46,13 @@ public class MainActivity extends AppCompatActivity
 
     // System sensor manager instance.
     private SensorManager mSensorManager;
+    private LocationManager locationManager;
+
     // Accelerometer and magnetometer sensors, as retrieved from the
     // sensor manager.
     private Sensor mSensorAccelerometer;
     private Sensor mSensorMagnetometer;
+
 
     //Add member variables to hold copies of the accelerometer and magnetometer data
     float[] mAccelerometerData = new float[3];
@@ -84,10 +92,11 @@ public class MainActivity extends AppCompatActivity
         mSensorMagnetometer = mSensorManager.getDefaultSensor(
                 Sensor.TYPE_MAGNETIC_FIELD);
 
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
         IntentFilter filter = new IntentFilter(Constants.ACTION_CONTEXT_ORIENTATION);
         registerReceiver(orientBCastReceiver, filter);
         dbHelper = new DatabaseHelper(getApplicationContext(), Orientation_Provider.DATABASE_NAME, null, 1, Orientation_Provider.DATABASE_TABLES,Orientation_Provider.TABLES_FIELDS);
-
     }
 
     /**
@@ -137,8 +146,8 @@ public class MainActivity extends AppCompatActivity
                 accelData.putExtra("type",Constants.ACCEL_FLOAT_DATA);
                 accelData.putExtra(Constants.ACTION_CONTEXT_ORIENTATION,mAccelerometerData);
                 sendBroadcast(accelData);
-
                 break;
+
             case Sensor.TYPE_MAGNETIC_FIELD:
                 mMagnetometerData = sensorEvent.values.clone();
                 Intent magnetData = new Intent(Constants.ACTION_CONTEXT_ORIENTATION);
@@ -146,6 +155,7 @@ public class MainActivity extends AppCompatActivity
                 magnetData.putExtra(Constants.ACTION_CONTEXT_ORIENTATION,mMagnetometerData);
                 sendBroadcast(magnetData);
                 break;
+
             default:
                 return;
         }
@@ -207,6 +217,24 @@ public class MainActivity extends AppCompatActivity
         }
     };
 
+    private BroadcastReceiver locationBCastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
 
+            //Insert location Data into SQLite DB
+//            ContentValues rowData = new ContentValues();
+//            rowData.put(Locations_Data.TIMESTAMP, System.currentTimeMillis());
+////            rowData.put(Locations_Data.DEVICE_ID, Aware.getSetting(getApplicationContext(), Aware_Preferences.DEVICE_ID));
+//            rowData.put(Locations_Data.PROVIDER, bestLocation.getProvider());
+//            rowData.put(Locations_Data.LATITUDE, bestLocation.getLatitude());
+//            rowData.put(Locations_Data.LONGITUDE, bestLocation.getLongitude());
+//            rowData.put(Locations_Data.BEARING, bestLocation.getBearing());
+//            rowData.put(Locations_Data.SPEED, bestLocation.getSpeed());
+//            rowData.put(Locations_Data.ALTITUDE, bestLocation.getAltitude());
+//            rowData.put(Locations_Data.ACCURACY, bestLocation.getAccuracy());
+//
+//            getContentResolver().insert(Locations_Data.CONTENT_URI, rowData);
+        }
+    };
 
 }

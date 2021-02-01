@@ -33,7 +33,7 @@ limitations under the License. -->
 
         <provider
             android:name="com.spacecontext.providers.Orientation_Provider"
-            android:authorities="com.spacecontext.provider"
+            android:authorities="${applicationId}.provider"
             android:exported="true"
             android:syncable="true" />
     </application>
