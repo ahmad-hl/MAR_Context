@@ -12,5 +12,5 @@ The framework till now looks like:
 ![alt text](spacecontext.png)
 
 ## The ultimate goal
-The framework till now looks like:
+We expect ultimate framework of the virtual space context to look like:
 ![alt text](finalvscontext.png)
