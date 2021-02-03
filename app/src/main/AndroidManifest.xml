@@ -15,7 +15,11 @@ limitations under the License. -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.spacecontext">
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -31,11 +35,35 @@ limitations under the License. -->
             </intent-filter>
         </activity>
 
+        <!-- Accelerometer, Magnetometer, and Location Data Providers -->
         <provider
-            android:name="com.spacecontext.providers.Orientation_Provider"
-            android:authorities="${applicationId}.provider"
+            android:name="com.spacecontext.providers.Accelerometer_Provider"
+            android:authorities="${applicationId}.provider.accelerometer"
             android:exported="true"
             android:syncable="true" />
+
+        <provider
+            android:name="com.spacecontext.providers.Magnetometer_Provider"
+            android:authorities="${applicationId}.provider.magnetometer"
+            android:exported="true"
+            android:syncable="true" />
+
+        <provider
+            android:name="com.spacecontext.providers.Location_Provider"
+            android:authorities="${applicationId}.provider.location"
+            android:exported="true"
+            android:syncable="true" />
+
+        <provider
+            android:name="com.spacecontext.providers.Orientation_Provider"
+            android:authorities="${applicationId}.provider.orientation"
+            android:exported="true"
+            android:syncable="true" />
+
+        <!-- Accelerometer, Magnetometer, and Location Services -->
+        <service android:name=".services.LocationLogger"/>
+        <service android:name=".services.MagnetLogger"/>
+        <service android:name=".services.AccelerationLogger"/>
     </application>
 
 </manifest>

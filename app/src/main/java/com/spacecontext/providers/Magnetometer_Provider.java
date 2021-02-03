@@ -3,7 +3,6 @@ package com.spacecontext.providers;
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -16,28 +15,27 @@ import android.support.annotation.Nullable;
 
 import com.spacecontext.DatabaseHelper;
 
-public class Orientation_Provider extends ContentProvider {
-    public static String AUTHORITY = "com.spacecontext.provider.orientation";
+public class Magnetometer_Provider extends ContentProvider {
+    public static String AUTHORITY = "com.spacecontext.provider.magnetometer";
     private DatabaseHelper dbHelper;
     private static SQLiteDatabase database;
-    public static String DATABASE_NAME = "orientation.db";
+    public static String DATABASE_NAME = "magnetometer.db";
     public static final int DATABASE_VERSION = 2;
 
     private UriMatcher sUriMatcher;
-    public final static  String[] DATABASE_TABLES = {"orientation"};
-    public final static String[] TABLES_FIELDS= {Orientation_Data._ID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+Orientation_Data.COLUMN_AZIMUTH+" REAL NOT NULL,"+Orientation_Data.COLUMN_PITCH+" REAL NOT NULL,"+Orientation_Data.COLUMN_ROLL+" REAL NOT NULL, "+Orientation_Data.COLUMN_TIMESTAMP+" TIMESTAMP DEFAULT CURRENT_TIMESTAMP"};
+    public final static  String[] DATABASE_TABLES = {"magnetometer"};
+    public final static String[] TABLES_FIELDS= {Magnetometer_Data._ID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+ Magnetometer_Data.COLUMN_X+" REAL NOT NULL,"+ Magnetometer_Data.COLUMN_Y+" REAL NOT NULL,"+ Magnetometer_Data.COLUMN_Z+" REAL NOT NULL, "+ Magnetometer_Data.COLUMN_ACCURACY+" REAL NOT NULL, "+ Magnetometer_Data.COLUMN_TIMESTAMP+" TIMESTAMP DEFAULT CURRENT_TIMESTAMP"};
 
     // code for query paths
-    private final int ORIENT_DATA = 1;
-    private final int ORIENT_DATA_ID = 2;
+    private final int MAGNET_DATA = 1;
+    private final int MAGNET_DATA_ID = 2;
 
     @Override
     public boolean onCreate() {
-//        AUTHORITY = getContext().getPackageName() + ".provider.orientation";
-        AUTHORITY = "com.spacecontext.provider.orientation";
+        AUTHORITY = "com.spacecontext.provider.magnetometer";
         sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        sUriMatcher.addURI(Orientation_Provider.AUTHORITY, DATABASE_TABLES[0], ORIENT_DATA);
-        sUriMatcher.addURI(Orientation_Provider.AUTHORITY, DATABASE_TABLES[0] + "/#", ORIENT_DATA_ID);
+        sUriMatcher.addURI(Magnetometer_Provider.AUTHORITY, DATABASE_TABLES[0], MAGNET_DATA);
+        sUriMatcher.addURI(Magnetometer_Provider.AUTHORITY, DATABASE_TABLES[0] + "/#", MAGNET_DATA_ID);
 
         return true;
     }
@@ -50,9 +48,9 @@ public class Orientation_Provider extends ContentProvider {
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         qb.setStrict(true);
         switch (sUriMatcher.match(uri)) {
-            case ORIENT_DATA:
+            case MAGNET_DATA:
                 qb.setTables(DATABASE_TABLES[0]);
-//                qb.setProjectionMap(orientDataMap);
+//                qb.setProjectionMap(accelDataMap);
                 break;
             default:
                 throw new IllegalArgumentException("Unknown URI " + uri);
@@ -71,10 +69,10 @@ public class Orientation_Provider extends ContentProvider {
     @Override
     public String getType(@NonNull Uri uri) {
         switch (sUriMatcher.match(uri)) {
-            case ORIENT_DATA:
-                return Orientation_Data.CONTENT_TYPE;
-            case ORIENT_DATA_ID:
-                return Orientation_Data.CONTENT_ITEM_TYPE;
+            case MAGNET_DATA:
+                return Magnetometer_Data.CONTENT_TYPE;
+            case MAGNET_DATA_ID:
+                return Magnetometer_Data.CONTENT_ITEM_TYPE;
             default:
                 throw new IllegalArgumentException("Unknown URI " + uri);
         }
@@ -87,14 +85,14 @@ public class Orientation_Provider extends ContentProvider {
         database.beginTransaction();
 
         switch (sUriMatcher.match(uri)) {
-            case ORIENT_DATA:
-                long orientData_id = database.insertWithOnConflict(DATABASE_TABLES[0], null, values, SQLiteDatabase.CONFLICT_IGNORE);
-                if (orientData_id > 0) {
-                    Uri orientDataUri = ContentUris.withAppendedId(Orientation_Data.CONTENT_URI, orientData_id);
-                    getContext().getContentResolver().notifyChange(orientDataUri, null, false);
+            case MAGNET_DATA:
+                long magnetData_id = database.insertWithOnConflict(DATABASE_TABLES[0], null, values, SQLiteDatabase.CONFLICT_IGNORE);
+                if (magnetData_id > 0) {
+                    Uri magnetDataUri = ContentUris.withAppendedId(Magnetometer_Data.CONTENT_URI, magnetData_id);
+                    getContext().getContentResolver().notifyChange(magnetDataUri, null, false);
                     database.setTransactionSuccessful();
                     database.endTransaction();
-                    return orientDataUri;
+                    return magnetDataUri;
                 }
                 database.endTransaction();
                 throw new SQLException("Failed to insert row into " + uri);
@@ -110,7 +108,7 @@ public class Orientation_Provider extends ContentProvider {
         database.beginTransaction();
         int count;
         switch (sUriMatcher.match(uri)) {
-            case ORIENT_DATA:
+            case MAGNET_DATA:
                 count =  database.delete(DATABASE_TABLES[0], selection, selectionArgs);
                 break;
             default:
@@ -131,7 +129,7 @@ public class Orientation_Provider extends ContentProvider {
         database.beginTransaction();
         int count;
         switch (sUriMatcher.match(uri)) {
-            case ORIENT_DATA:
+            case MAGNET_DATA:
                 count = database.update(DATABASE_TABLES[0], contentValues, selection, selectionArgs);
                 break;
             default:
@@ -144,20 +142,21 @@ public class Orientation_Provider extends ContentProvider {
         return count;
     }
 
-    public static final class Orientation_Data implements BaseColumns {
+    public static final class Magnetometer_Data implements BaseColumns {
         // make the constructor private.
-        private Orientation_Data() {
+        private Magnetometer_Data() {
         }
 
         public static final Uri CONTENT_URI = Uri.parse("content://"
-                + Orientation_Provider.AUTHORITY + "/orientation");
+                + Magnetometer_Provider.AUTHORITY + "/magnetometer");
 
-        public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.spacecontext.orientation.data";
-        public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.spacecontext.orientation.data";
+        public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.spacecontext.magnetometer.data";
+        public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.spacecontext.magnetometer.data";
 
-        public static final String COLUMN_AZIMUTH = "azimuth";
-        public static final String COLUMN_PITCH = "pitch";
-        public static final String COLUMN_ROLL = "roll";
+        public static final String COLUMN_X= "x";
+        public static final String COLUMN_Y= "y";
+        public static final String COLUMN_Z = "z";
+        public static final String COLUMN_ACCURACY = "accuracy";
         public static final String COLUMN_TIMESTAMP = "timestamp";
     }
 
