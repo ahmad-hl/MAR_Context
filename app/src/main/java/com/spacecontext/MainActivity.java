@@ -75,17 +75,18 @@ public class MainActivity extends AppCompatActivity {
         dbHelper = new DatabaseHelper(getApplicationContext(), Orientation_Provider.DATABASE_NAME, null, 1, Orientation_Provider.DATABASE_TABLES,Orientation_Provider.TABLES_FIELDS);
 
 
+        //Start the sensor service
         Intent locServiceIntent = new Intent(this, LocationLogger.class);
         locServiceIntent.putExtra("inputExtra", "Location Service Started");
-        ContextCompat.startForegroundService(this, locServiceIntent);
+        startService(locServiceIntent);
 
         Intent accelServiceIntent = new Intent(this, AccelerationLogger.class);
         accelServiceIntent.putExtra("inputExtra", "Acceleration Service Started");
-        ContextCompat.startForegroundService(this, accelServiceIntent);
+        startService(accelServiceIntent);
 
         Intent magnetServiceIntent = new Intent(this, MagnetLogger.class);
         magnetServiceIntent.putExtra("inputExtra", "Magnet Service Started");
-        ContextCompat.startForegroundService(this, magnetServiceIntent);
+        startService(magnetServiceIntent);
     }
 
     /**
@@ -147,7 +148,6 @@ public class MainActivity extends AppCompatActivity {
                         R.string.value_format, mMagnetometerData[1]));
                 mTextSensorRoll.setText(getResources().getString(
                         R.string.value_format, mMagnetometerData[2]));
-
             }
         }
     };

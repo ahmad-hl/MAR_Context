@@ -5,3 +5,6 @@ To define a virtual space, an MAR system requires to define the physical context
 1. IMU data, GPS
 2. Light sensor data (from the front of the phone).
 3. AR-based Focal length and Aperture.
+
+The framework till now looks like:
+![alt text](spacecontext.png)
