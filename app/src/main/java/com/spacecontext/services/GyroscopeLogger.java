@@ -23,6 +23,8 @@ import com.spacecontext.providers.Gyroscope_Provider.Gyroscope_Data;
 import com.spacecontext.providers.Gyroscope_Provider;
 
 public class GyroscopeLogger extends Service implements SensorEventListener {
+    public static String TAG = "VSpaceContext::GyroscopeLogger";
+
     // System sensor manager instance.
     private SensorManager mSensorManager;
     // Gyroscope and magnetometer sensors, as retrieved from sensor manager.

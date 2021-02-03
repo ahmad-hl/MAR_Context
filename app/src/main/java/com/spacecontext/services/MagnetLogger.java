@@ -22,6 +22,8 @@ import com.spacecontext.R;
 import com.spacecontext.providers.Magnetometer_Provider.Magnetometer_Data;
 
 public class MagnetLogger extends Service implements SensorEventListener {
+    public static String TAG = "VSpaceContext::MagnetLogger";
+
     // System sensor manager instance.
     private SensorManager mSensorManager;
     // Accelerometer and magnetometer sensors, as retrieved from sensor manager.

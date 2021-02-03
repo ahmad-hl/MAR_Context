@@ -28,6 +28,8 @@ import com.spacecontext.R;
 import com.spacecontext.providers.Location_Provider.Location_Data;
 
 public class LocationLogger extends Service implements LocationListener {
+    public static String TAG = "VSpaceContext::LocationLogger";
+
     private static LocationManager locationManager = null;
     private final static int REQUEST_CHECK_GOOGLE_SETTINGS = 0x99;
 

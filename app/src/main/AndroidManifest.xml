@@ -65,12 +65,18 @@ limitations under the License. -->
             android:authorities="${applicationId}.provider.gyroscope"
             android:exported="true"
             android:syncable="true" />
+        <provider
+            android:name="com.spacecontext.providers.Environment_Provider"
+            android:authorities="${applicationId}.provider.env"
+            android:exported="true"
+            android:syncable="true" />
 
         <!-- Accelerometer, Magnetometer, and Location Services -->
         <service android:name=".services.LocationLogger"/>
         <service android:name=".services.GyroscopeLogger"/>
         <service android:name=".services.MagnetLogger"/>
         <service android:name=".services.AccelerationLogger"/>
+        <service android:name=".services.EnvironmentLogger"/>
     </application>
 
 </manifest>

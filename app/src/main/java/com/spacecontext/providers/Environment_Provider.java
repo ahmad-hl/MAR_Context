@@ -15,29 +15,28 @@ import android.support.annotation.Nullable;
 
 import com.spacecontext.DatabaseHelper;
 
-public class Accelerometer_Provider extends ContentProvider {
-    public static String TAG = "VSpaceContext::Accelerometer_Provider";
-
-    public static String AUTHORITY = "com.spacecontext.provider.accelerometer";
+public class Environment_Provider extends ContentProvider {
+    public static String AUTHORITY = "com.spacecontext.provider.env";
     private DatabaseHelper dbHelper;
     private static SQLiteDatabase database;
-    public static String DATABASE_NAME = "accelerometer.db";
+    public static String DATABASE_NAME = "env.db";
     public static final int DATABASE_VERSION = 2;
 
     private UriMatcher sUriMatcher;
-    public final static  String[] DATABASE_TABLES = {"accelerometer"};
-    public final static String[] TABLES_FIELDS= {Accelerometer_Data._ID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+ Accelerometer_Data.COLUMN_X+" REAL NOT NULL,"+ Accelerometer_Data.COLUMN_Y+" REAL NOT NULL,"+ Accelerometer_Data.COLUMN_Z+" REAL NOT NULL, "+ Accelerometer_Data.COLUMN_ACCURACY+" REAL NOT NULL, "+ Accelerometer_Data.COLUMN_TIMESTAMP+" TIMESTAMP DEFAULT CURRENT_TIMESTAMP"};
+    public final static  String[] DATABASE_TABLES = {"env"};
+
+    public final static String[] TABLES_FIELDS= {Environment_Data._ID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+ Environment_Data.AMB_AIR_TEMPERATURE+" REAL NOT NULL,"+ Environment_Data.AMB_ILLUMINANCE+" REAL NOT NULL,"+ Environment_Data.AMB_AIR_PRESSURE+" REAL NOT NULL, "+ Environment_Data.AMB_AIR_HUMIDITY+" REAL NOT NULL, "+ Environment_Data.COLUMN_TIMESTAMP+" TIMESTAMP DEFAULT CURRENT_TIMESTAMP"};
 
     // code for query paths
-    private final int ACCEL_DATA = 1;
-    private final int ACCEL_DATA_ID = 2;
+    private final int ENV_DATA = 1;
+    private final int ENV_DATA_ID = 2;
 
     @Override
     public boolean onCreate() {
-        AUTHORITY = "com.spacecontext.provider.accelerometer";
+        AUTHORITY = "com.spacecontext.provider.env";
         sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        sUriMatcher.addURI(Accelerometer_Provider.AUTHORITY, DATABASE_TABLES[0], ACCEL_DATA);
-        sUriMatcher.addURI(Accelerometer_Provider.AUTHORITY, DATABASE_TABLES[0] + "/#", ACCEL_DATA_ID);
+        sUriMatcher.addURI(Environment_Provider.AUTHORITY, DATABASE_TABLES[0], ENV_DATA);
+        sUriMatcher.addURI(Environment_Provider.AUTHORITY, DATABASE_TABLES[0] + "/#",ENV_DATA_ID);
 
         return true;
     }
@@ -50,7 +49,7 @@ public class Accelerometer_Provider extends ContentProvider {
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         qb.setStrict(true);
         switch (sUriMatcher.match(uri)) {
-            case ACCEL_DATA:
+            case ENV_DATA:
                 qb.setTables(DATABASE_TABLES[0]);
 //                qb.setProjectionMap(accelDataMap);
                 break;
@@ -71,10 +70,10 @@ public class Accelerometer_Provider extends ContentProvider {
     @Override
     public String getType(@NonNull Uri uri) {
         switch (sUriMatcher.match(uri)) {
-            case ACCEL_DATA:
-                return Accelerometer_Data.CONTENT_TYPE;
-            case ACCEL_DATA_ID:
-                return Accelerometer_Data.CONTENT_ITEM_TYPE;
+            case ENV_DATA:
+                return Environment_Data.CONTENT_TYPE;
+            case ENV_DATA_ID:
+                return Environment_Data.CONTENT_ITEM_TYPE;
             default:
                 throw new IllegalArgumentException("Unknown URI " + uri);
         }
@@ -87,14 +86,14 @@ public class Accelerometer_Provider extends ContentProvider {
         database.beginTransaction();
 
         switch (sUriMatcher.match(uri)) {
-            case ACCEL_DATA:
-                long accelData_id = database.insertWithOnConflict(DATABASE_TABLES[0], null, values, SQLiteDatabase.CONFLICT_IGNORE);
-                if (accelData_id > 0) {
-                    Uri accelDataUri = ContentUris.withAppendedId(Accelerometer_Data.CONTENT_URI, accelData_id);
-                    getContext().getContentResolver().notifyChange(accelDataUri, null, false);
+            case ENV_DATA:
+                long envData_id = database.insertWithOnConflict(DATABASE_TABLES[0], null, values, SQLiteDatabase.CONFLICT_IGNORE);
+                if (envData_id > 0) {
+                    Uri envDataUri = ContentUris.withAppendedId(Environment_Data.CONTENT_URI, envData_id);
+                    getContext().getContentResolver().notifyChange(envDataUri, null, false);
                     database.setTransactionSuccessful();
                     database.endTransaction();
-                    return accelDataUri;
+                    return envDataUri;
                 }
                 database.endTransaction();
                 throw new SQLException("Failed to insert row into " + uri);
@@ -110,7 +109,7 @@ public class Accelerometer_Provider extends ContentProvider {
         database.beginTransaction();
         int count;
         switch (sUriMatcher.match(uri)) {
-            case ACCEL_DATA:
+            case ENV_DATA:
                 count =  database.delete(DATABASE_TABLES[0], selection, selectionArgs);
                 break;
             default:
@@ -131,7 +130,7 @@ public class Accelerometer_Provider extends ContentProvider {
         database.beginTransaction();
         int count;
         switch (sUriMatcher.match(uri)) {
-            case ACCEL_DATA:
+            case ENV_DATA:
                 count = database.update(DATABASE_TABLES[0], contentValues, selection, selectionArgs);
                 break;
             default:
@@ -144,21 +143,21 @@ public class Accelerometer_Provider extends ContentProvider {
         return count;
     }
 
-    public static final class Accelerometer_Data implements BaseColumns {
+    public static final class Environment_Data implements BaseColumns {
         // make the constructor private.
-        private Accelerometer_Data() {
+        private Environment_Data() {
         }
 
         public static final Uri CONTENT_URI = Uri.parse("content://"
-                + Accelerometer_Provider.AUTHORITY + "/accelerometer");
+                + Environment_Provider.AUTHORITY + "/env");
 
-        public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.spacecontext.accelerometer.data";
-        public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.spacecontext.accelerometer.data";
+        public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.spacecontext.env.data";
+        public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.spacecontext.env.data";
 
-        public static final String COLUMN_X= "x";
-        public static final String COLUMN_Y= "y";
-        public static final String COLUMN_Z = "z";
-        public static final String COLUMN_ACCURACY = "accuracy";
+        public static final String AMB_AIR_TEMPERATURE= "ambientAirTemp";
+        public static final String AMB_ILLUMINANCE= "illuminance";
+        public static final String AMB_AIR_PRESSURE = "ambientAirPressure";
+        public static final String AMB_AIR_HUMIDITY = "ambientAirHumidity";
         public static final String COLUMN_TIMESTAMP = "timestamp";
     }
 

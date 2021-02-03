@@ -29,8 +29,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.spacecontext.bcastreceivers.EnvBCastReceiver;
 import com.spacecontext.providers.Orientation_Provider;
 import com.spacecontext.services.AccelerationLogger;
+import com.spacecontext.services.EnvironmentLogger;
 import com.spacecontext.services.GyroscopeLogger;
 import com.spacecontext.services.LocationLogger;
 import com.spacecontext.services.MagnetLogger;
@@ -47,6 +49,11 @@ public class MainActivity extends AppCompatActivity {
 
     private float[] mAccelerometerData = null;
     private float[] mMagnetometerData = null;
+
+    private float ambientAirTemp_c;
+    private float illuminance_lx;
+    private float ambientAirPressure;
+    private float ambientAirHumidity;
 
     // Very small values for the accelerometer (on all three axes) should be interpreted as 0. This value is the amount of acceptable non-zero drift.
     private static final float VALUE_DRIFT = 0.05f;
@@ -86,12 +93,22 @@ public class MainActivity extends AppCompatActivity {
         gyroscopeServiceIntent.putExtra("inputExtra", "Gyroscope Service Started");
         startService(gyroscopeServiceIntent);
 
+        Intent envServiceIntent = new Intent(this, EnvironmentLogger.class);
+        envServiceIntent.putExtra("inputExtra", "Environment Service Started");
+        startService(envServiceIntent);
+
         //Register Broadcast Receivers
         IntentFilter filter = new IntentFilter(Constants.ACTION_CONTEXT_ORIENTATION);
         registerReceiver(msensorBCastReceiver, filter);
 
         IntentFilter orientFilter = new IntentFilter(Constants.ACTION_CONTEXT_ORIENTATION);
         registerReceiver(orientBCastReceiver, orientFilter);
+
+        IntentFilter envFilter = new IntentFilter(Constants.ACTION_CONTEXT_ENVIRONMENT);
+        registerReceiver(envBCastReceiver, envFilter);
+
+
+
     }
 
     /**
@@ -124,15 +141,20 @@ public class MainActivity extends AppCompatActivity {
         Intent magnetNotiIntent = new Intent(this, MagnetLogger.class);
         stopService(magnetNotiIntent);
 
-        Intent gyroscopeNotiIntent = new Intent(this, MagnetLogger.class);
+        Intent gyroscopeNotiIntent = new Intent(this, GyroscopeLogger.class);
         stopService(gyroscopeNotiIntent);
+
+        Intent envNotiIntent = new Intent(this, EnvironmentLogger.class);
+        stopService(envNotiIntent);
 
         //Unregister Broadcast Receiver
         unregisterReceiver(msensorBCastReceiver);
         unregisterReceiver(orientBCastReceiver);
+        unregisterReceiver(envBCastReceiver);
     }
 
     private final OrientationBCastReceiver orientBCastReceiver = new OrientationBCastReceiver(mAccelerometerData,mMagnetometerData);
+    private final EnvBCastReceiver envBCastReceiver = new EnvBCastReceiver(ambientAirTemp_c,illuminance_lx, ambientAirPressure,ambientAirHumidity );
 
     private BroadcastReceiver msensorBCastReceiver = new BroadcastReceiver() {
         @Override
@@ -140,7 +162,6 @@ public class MainActivity extends AppCompatActivity {
 
             Bundle extras = intent.getExtras();
             String type = extras.getString("type");
-            float[] data = null;
             if (type.equals(Constants.ACCEL_DATA)) {
                 mAccelerometerData = extras.getFloatArray(Constants.ACCEL_FLOAT_DATA);
                 mTextSensorAzimuth.setText(getResources().getString(

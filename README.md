@@ -11,6 +11,9 @@ If extracting some data require sensor data fusion, the fusion occurs in a custo
 The framework till now looks like:
 ![alt text](spacecontext.png)
 
+Ambient environment's also provide useful information for space recognition process.  
+Recognition in night (light sensor), and seasons other than the learning season (humidity, pressure and tempereture sensors help here).
+
 ## The ultimate goal
 We expect ultimate framework of the virtual space context to look like:
 ![alt text](fvscontext.png)

@@ -23,6 +23,8 @@ import com.spacecontext.providers.Accelerometer_Provider;
 import com.spacecontext.providers.Accelerometer_Provider.Accelerometer_Data;
 
 public class AccelerationLogger extends Service implements SensorEventListener {
+    public static String TAG = "VSpaceContext::AccelerationLogger";
+
     // System sensor manager instance.
     private SensorManager mSensorManager;
     // Accelerometer and magnetometer sensors, as retrieved from sensor manager.

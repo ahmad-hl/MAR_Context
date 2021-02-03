@@ -16,6 +16,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 public class OrientationBCastReceiver extends BroadcastReceiver {
+    public static String TAG = "VSpaceContext::OrientationBCastReceiver";
+
     float[] mAccelerometerData;
     float[] mMagnetometerData;
 
@@ -60,7 +62,7 @@ public class OrientationBCastReceiver extends BroadcastReceiver {
 
             // Insert the new row, returning the primary key value of the new row
             Uri orientDataUri = context.getContentResolver().insert(Orientation_Data.CONTENT_URI, values);
-            Log.d("Orientation", "Orientation is saved  to " + orientDataUri.toString());
+            Log.d(TAG, "Orientation is saved  to " + orientDataUri.toString());
         }
     }
 }
