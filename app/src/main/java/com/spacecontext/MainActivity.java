@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import com.spacecontext.providers.Orientation_Provider;
 import com.spacecontext.services.AccelerationLogger;
+import com.spacecontext.services.GyroscopeLogger;
 import com.spacecontext.services.LocationLogger;
 import com.spacecontext.services.MagnetLogger;
 
@@ -47,9 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private float[] mAccelerometerData = null;
     private float[] mMagnetometerData = null;
 
-    // Very small values for the accelerometer (on all three axes) should
-    // be interpreted as 0. This value is the amount of acceptable
-    // non-zero drift.
+    // Very small values for the accelerometer (on all three axes) should be interpreted as 0. This value is the amount of acceptable non-zero drift.
     private static final float VALUE_DRIFT = 0.05f;
     private DatabaseHelper dbHelper;
     private static SQLiteDatabase database = null;
@@ -66,11 +65,6 @@ public class MainActivity extends AppCompatActivity {
         mTextSensorPitch = (TextView) findViewById(R.id.value_pitch);
         mTextSensorRoll = (TextView) findViewById(R.id.value_roll);
 
-        IntentFilter filter = new IntentFilter(Constants.ACTION_CONTEXT_ORIENTATION);
-        registerReceiver(msensorBCastReceiver, filter);
-
-        IntentFilter orientFilter = new IntentFilter(Constants.ACTION_CONTEXT_ORIENTATION);
-        registerReceiver(orientBCastReceiver, orientFilter);
 
         dbHelper = new DatabaseHelper(getApplicationContext(), Orientation_Provider.DATABASE_NAME, null, 1, Orientation_Provider.DATABASE_TABLES,Orientation_Provider.TABLES_FIELDS);
 
@@ -87,6 +81,17 @@ public class MainActivity extends AppCompatActivity {
         Intent magnetServiceIntent = new Intent(this, MagnetLogger.class);
         magnetServiceIntent.putExtra("inputExtra", "Magnet Service Started");
         startService(magnetServiceIntent);
+
+        Intent gyroscopeServiceIntent = new Intent(this, GyroscopeLogger.class);
+        gyroscopeServiceIntent.putExtra("inputExtra", "Gyroscope Service Started");
+        startService(gyroscopeServiceIntent);
+
+        //Register Broadcast Receivers
+        IntentFilter filter = new IntentFilter(Constants.ACTION_CONTEXT_ORIENTATION);
+        registerReceiver(msensorBCastReceiver, filter);
+
+        IntentFilter orientFilter = new IntentFilter(Constants.ACTION_CONTEXT_ORIENTATION);
+        registerReceiver(orientBCastReceiver, orientFilter);
     }
 
     /**
@@ -109,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
+        //Stop the sensor service
         Intent locNotiIntent = new Intent(this, LocationLogger.class);
         stopService(locNotiIntent);
 
@@ -118,7 +124,10 @@ public class MainActivity extends AppCompatActivity {
         Intent magnetNotiIntent = new Intent(this, MagnetLogger.class);
         stopService(magnetNotiIntent);
 
+        Intent gyroscopeNotiIntent = new Intent(this, MagnetLogger.class);
+        stopService(gyroscopeNotiIntent);
 
+        //Unregister Broadcast Receiver
         unregisterReceiver(msensorBCastReceiver);
         unregisterReceiver(orientBCastReceiver);
     }
