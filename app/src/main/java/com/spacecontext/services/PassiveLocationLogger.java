@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
@@ -22,10 +24,10 @@ import android.widget.Toast;
 
 import com.spacecontext.MainActivity;
 import com.spacecontext.R;
-import com.spacecontext.util.Constants;
+import com.spacecontext.providers.Location_Provider;
 
 public class PassiveLocationLogger extends Service implements LocationListener{
-    private final static String TAG = "SpaceContext:PassiveLocationLogger";
+    private static String TAG = "SpaceContext:PassiveLocationLogger";
     private final static int REQUEST_CHECK_GOOGLE_SETTINGS = 0x99;
 
     private boolean isGPSEnable = false;
@@ -132,7 +134,9 @@ public class PassiveLocationLogger extends Service implements LocationListener{
                 location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                 if (location != null) {
                     Log.e("Loc", "Lat:"+location.getLongitude() + ",Lon:"+location.getLatitude());
-                    sendBCastupdate(location);
+
+                    //Insert location Data into SQLite DB
+                    saveLocation(this, location);
                 }
             }
         }
@@ -144,18 +148,24 @@ public class PassiveLocationLogger extends Service implements LocationListener{
                 location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 if (location != null) {
                     Log.e("Loc", "Lat:"+location.getLongitude() + ",Lon:"+location.getLatitude());
-                    sendBCastupdate(location);
+
+                    //Insert location Data into SQLite DB
+                    saveLocation(this, location);
                 }
             }
         }
     }
 
-    private void sendBCastupdate(Location location){
-        Intent intent = new Intent(Constants.ACTION_CONTEXT_LOCATION);
-        intent.putExtra(Constants.LAT_FLOAT_DATA,location.getLatitude());
-        intent.putExtra(Constants.LON_FLOAT_DATA,location.getLongitude());
-        intent.putExtra(Constants.ALT_FLOAT_DATA,location.getAltitude());
-        sendBroadcast(intent);
+    private void saveLocation(Context mContext, Location location){
+        //Insert location Data into SQLite DB
+        ContentValues values = new ContentValues();
+        values.put(Location_Provider.Location_Data.LATITUDE, location.getLatitude());
+        values.put(Location_Provider.Location_Data.LONGITUDE, location.getLongitude());
+        values.put(Location_Provider.Location_Data.ALTITUDE, location.getAltitude());
+
+        // Insert the new row, returning the primary key value of the new row
+        Uri locDataUri = mContext.getContentResolver().insert(Location_Provider.Location_Data.CONTENT_URI, values);
+        Log.d(TAG, "Passive Location is saved  to " + locDataUri.toString());
     }
 
 }
