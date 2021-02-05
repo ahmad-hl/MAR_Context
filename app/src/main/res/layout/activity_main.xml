@@ -19,7 +19,7 @@ limitations under the License. -->
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.spacecontext.android.spaceContext.com.spacecontext.MainActivity">
+    tools:context="com.spacecontext.MainActivity">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/label_group"
@@ -32,6 +32,17 @@ limitations under the License. -->
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+
+        <Button
+            android:id="@+id/passiveLoc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="getPassiveLocation"
+            android:text="Passive Locaion:"
+            style="@style/Widget.AppCompat.Button"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/label_group" />
+
         <!-- Labels -->
         <TextView
             android:id="@+id/label_azimuth"
@@ -39,8 +50,8 @@ limitations under the License. -->
             android:layout_height="wrap_content"
             android:text="@string/label_azimuth_string"
             style="@style/Label"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/label_group"/>
+            app:layout_constraintLeft_toLeftOf="@id/passiveLoc"
+            app:layout_constraintTop_toTopOf="@+id/passiveLoc"/>
 
         <TextView
             android:id="@+id/label_pitch"
@@ -91,5 +102,6 @@ limitations under the License. -->
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/value_pitch"/>
     </android.support.constraint.ConstraintLayout>
+
 
 </android.support.constraint.ConstraintLayout>

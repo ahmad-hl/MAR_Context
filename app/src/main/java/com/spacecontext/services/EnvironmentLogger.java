@@ -3,30 +3,26 @@ package com.spacecontext.services;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.net.Uri;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 import android.widget.Toast;
 
-import com.spacecontext.Constants;
+import com.spacecontext.util.Constants;
 import com.spacecontext.MainActivity;
 import com.spacecontext.R;
-import com.spacecontext.providers.Accelerometer_Provider.Accelerometer_Data;
 
 public class EnvironmentLogger extends Service implements SensorEventListener {
     public static String TAG = "VSpaceContext::EnvironmentLogger";
 
     // System sensor manager instance.
     private SensorManager mSensorManager;
-    // Accelerometer and magnetometer sensors, as retrieved from sensor manager.
+    // Pressure, Temperature, Humidity and Light sensors, as retrieved from sensor manager.
     private Sensor mSensorPressure;
     private Sensor mSensorTemp;
     private Sensor mSensorHumidity;
@@ -100,7 +96,7 @@ public class EnvironmentLogger extends Service implements SensorEventListener {
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
                 0, notificationIntent, 0);
-        Notification notification = new NotificationCompat.Builder(this, App.CHANNEL_ID)
+        Notification notification = new NotificationCompat.Builder(this, NotificationChannelApp.CHANNEL_ID)
                 .setContentTitle("Environment Service")
                 .setSmallIcon(R.drawable.ic_android)
                 .setContentIntent(pendingIntent)

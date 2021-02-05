@@ -20,7 +20,6 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.spacecontext.MainActivity;
@@ -33,13 +32,12 @@ public class LocationLogger extends Service implements LocationListener {
     private static LocationManager locationManager = null;
     private final static int REQUEST_CHECK_GOOGLE_SETTINGS = 0x99;
 
-
     @Override
     public void onCreate() {
         super.onCreate();
     }
 
-    @Override
+        @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -49,7 +47,7 @@ public class LocationLogger extends Service implements LocationListener {
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
                 0, notificationIntent, 0);
-        Notification notification = new NotificationCompat.Builder(this, App.CHANNEL_ID)
+        Notification notification = new NotificationCompat.Builder(this, NotificationChannelApp.CHANNEL_ID)
                 .setContentTitle("Example Service")
                 .setContentText(input)
                 .setSmallIcon(R.drawable.ic_android)

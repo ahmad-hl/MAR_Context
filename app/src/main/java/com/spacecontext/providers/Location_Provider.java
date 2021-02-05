@@ -12,9 +12,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.provider.BaseColumns;
-import android.util.Log;
 
-import com.spacecontext.DatabaseHelper;
+import com.spacecontext.util.DatabaseHelper;
 
 import java.util.HashMap;
 

@@ -73,6 +73,7 @@ limitations under the License. -->
 
         <!-- Accelerometer, Magnetometer, and Location Services -->
         <service android:name=".services.LocationLogger"/>
+        <service android:name=".services.PassiveLocationLogger"/>
         <service android:name=".services.GyroscopeLogger"/>
         <service android:name=".services.MagnetLogger"/>
         <service android:name=".services.AccelerationLogger"/>

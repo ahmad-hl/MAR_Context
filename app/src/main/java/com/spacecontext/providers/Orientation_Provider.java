@@ -3,7 +3,6 @@ package com.spacecontext.providers;
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -14,7 +13,7 @@ import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.spacecontext.DatabaseHelper;
+import com.spacecontext.util.DatabaseHelper;
 
 public class Orientation_Provider extends ContentProvider {
     public static String AUTHORITY = "com.spacecontext.provider.orientation";

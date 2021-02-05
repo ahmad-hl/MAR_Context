@@ -16,11 +16,9 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.spacecontext.Constants;
 import com.spacecontext.MainActivity;
 import com.spacecontext.R;
 import com.spacecontext.providers.Gyroscope_Provider.Gyroscope_Data;
-import com.spacecontext.providers.Gyroscope_Provider;
 
 public class GyroscopeLogger extends Service implements SensorEventListener {
     public static String TAG = "VSpaceContext::GyroscopeLogger";
@@ -98,7 +96,7 @@ public class GyroscopeLogger extends Service implements SensorEventListener {
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
                 0, notificationIntent, 0);
-        Notification notification = new NotificationCompat.Builder(this, App.CHANNEL_ID)
+        Notification notification = new NotificationCompat.Builder(this, NotificationChannelApp.CHANNEL_ID)
                 .setContentTitle("Gyroscope Service")
                 .setSmallIcon(R.drawable.ic_android)
                 .setContentIntent(pendingIntent)

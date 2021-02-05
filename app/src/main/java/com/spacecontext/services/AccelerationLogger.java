@@ -16,7 +16,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.spacecontext.Constants;
+import com.spacecontext.util.Constants;
 import com.spacecontext.MainActivity;
 import com.spacecontext.R;
 import com.spacecontext.providers.Accelerometer_Provider;
@@ -106,7 +106,7 @@ public class AccelerationLogger extends Service implements SensorEventListener {
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
                 0, notificationIntent, 0);
-        Notification notification = new NotificationCompat.Builder(this, App.CHANNEL_ID)
+        Notification notification = new NotificationCompat.Builder(this, NotificationChannelApp.CHANNEL_ID)
                 .setContentTitle("Acceleration Service")
                 .setSmallIcon(R.drawable.ic_android)
                 .setContentIntent(pendingIntent)

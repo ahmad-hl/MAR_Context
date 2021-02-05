@@ -8,12 +8,11 @@ import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.spacecontext.Constants;
+import com.spacecontext.util.Constants;
 import com.spacecontext.providers.Orientation_Provider;
 import com.spacecontext.providers.Orientation_Provider.Orientation_Data;
 
 import android.util.Log;
-import android.widget.Toast;
 
 public class OrientationBCastReceiver extends BroadcastReceiver {
     public static String TAG = "VSpaceContext::OrientationBCastReceiver";

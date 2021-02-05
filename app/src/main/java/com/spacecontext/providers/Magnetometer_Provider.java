@@ -13,7 +13,7 @@ import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.spacecontext.DatabaseHelper;
+import com.spacecontext.util.DatabaseHelper;
 
 public class Magnetometer_Provider extends ContentProvider {
     public static String AUTHORITY = "com.spacecontext.provider.magnetometer";
