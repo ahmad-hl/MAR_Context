@@ -17,13 +17,17 @@
 package com.spacecontext;
 
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
 
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -62,6 +66,18 @@ public class MainActivity extends AppCompatActivity {
     private static final float VALUE_DRIFT = 0.05f;
     private DatabaseHelper dbHelper;
 
+    // To invoke the bound service, first make sure that this value
+    // is not null.
+    private PassiveLocationLogger locationLogger;
+    private ServiceConnection mConnection = new ServiceConnection() {
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            locationLogger = ((PassiveLocationLogger.LocalBinder)service).getService();
+        }
+        public void onServiceDisconnected(ComponentName className) {
+            locationLogger = null;
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,13 +92,19 @@ public class MainActivity extends AppCompatActivity {
         mTextSensorRoll = (TextView) findViewById(R.id.value_roll);
 
         //Start the sensor service
-        Intent locServiceIntent = new Intent(this, LocationLogger.class);
-        locServiceIntent.putExtra("inputExtra", "Location Service Started");
-        startService(locServiceIntent);
-//        Intent passiveLocServiceIntent = new Intent(this, PassiveLocationLogger.class);
-//        passiveLocServiceIntent.putExtra("inputExtra", "Passive Location Service Started");
-//        startService(passiveLocServiceIntent);
+//        Intent locServiceIntent = new Intent(this, LocationLogger.class);
+//        locServiceIntent.putExtra("inputExtra", "Location Service Started");
+//        startService(locServiceIntent)
 
+        Intent passiveLocServiceIntent = new Intent(this, PassiveLocationLogger.class);
+        passiveLocServiceIntent.putExtra("inputExtra", "Passive Location Service Started");
+        boolean boundStatus = bindService(passiveLocServiceIntent, mConnection, Context.BIND_AUTO_CREATE);
+        if (boundStatus) {
+            startService(passiveLocServiceIntent);
+        } else {
+            Log.e("MY_APP_TAG", "Error: The requested service doesn't " + "exist, or this client isn't allowed access to it.");
+        }
+        
         Intent accelServiceIntent = new Intent(this, AccelerationLogger.class);
         accelServiceIntent.putExtra("inputExtra", "Acceleration Service Started");
         startService(accelServiceIntent);
@@ -172,8 +194,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-//    public void getPassiveLocation(View view) {
-//        PassiveLocationLogger ploc= new PassiveLocationLogger(this);
-//        ploc.getLatestLocation();
-//    }
+    public void getPassiveLocation(View view) {
+        locationLogger.getLatestLocation(MainActivity.this);
+    }
 }

@@ -1,6 +1,7 @@
 package com.spacecontext.services;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -14,6 +15,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
@@ -36,18 +38,33 @@ public class PassiveLocationLogger extends Service implements LocationListener{
     private Location location;
     private Context mContext;
 
-    public PassiveLocationLogger(Context mContext){
-        this.mContext = mContext;
-    }
+    // This is the object that receives interactions from clients.
+    private final IBinder mBinder = new LocalBinder();
+
+//    public PassiveLocationLogger(Context mContext){
+//        this.mContext = mContext;
+//    }
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        return null;
+        return mBinder;
+    }
+
+    /**
+     * Class for clients to access.  Because we know this service always
+     * runs in the same process as its clients, we don't need to deal with
+     * IPC.
+     */
+    public class LocalBinder extends Binder {
+        public PassiveLocationLogger getService() {
+            return PassiveLocationLogger.this;
+        }
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
+        //this.mContext = getApplicationContext();
     }
 
     @Override
@@ -55,8 +72,8 @@ public class PassiveLocationLogger extends Service implements LocationListener{
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         Toast.makeText(this, "Passive Location Service has started..",Toast.LENGTH_LONG).show();
-
         String input = intent.getStringExtra("inputExtra");
+
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
                 0, notificationIntent, 0);
@@ -94,20 +111,20 @@ public class PassiveLocationLogger extends Service implements LocationListener{
     /**
      * Ask user for permission Allow/Don't Allow
      */
-    private void askForLocationDialog() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+    private void askForLocationDialog(final Activity mainActivity) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(mainActivity);
         builder.setTitle("Allow access your location ?");
-        builder.setMessage("If you want to disable location permission for \\\"Compass\\\", access to your application settings and disable it.");
+        builder.setMessage("If you want to disable location permission for 'Compass', access to your application settings and disable it.");
         builder.setPositiveButton(
                 "Allow", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        ActivityCompat.requestPermissions(null, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_CHECK_GOOGLE_SETTINGS);
+                        ActivityCompat.requestPermissions(mainActivity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_CHECK_GOOGLE_SETTINGS);
                     }
                 }
         );
         builder.setNegativeButton(
-                "Don\\'t allow", new DialogInterface.OnClickListener() {
+                "Don't allow", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -117,10 +134,10 @@ public class PassiveLocationLogger extends Service implements LocationListener{
         builder.show();
     }
 
-    public void getLatestLocation() {
+    public void getLatestLocation(Activity mainActivity) {
         //Check if pemission granted and return otherwise
-        if (ActivityCompat.checkSelfPermission((MainActivity)mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            askForLocationDialog();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            askForLocationDialog(mainActivity);
             return;
         }
 
@@ -133,7 +150,7 @@ public class PassiveLocationLogger extends Service implements LocationListener{
             if (locationManager != null) {
                 location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                 if (location != null) {
-                    Log.e("Loc", "Lat:"+location.getLongitude() + ",Lon:"+location.getLatitude());
+                    Log.d("Loc", "Lat:"+location.getLongitude() + ",Lon:"+location.getLatitude());
 
                     //Insert location Data into SQLite DB
                     saveLocation(this, location);
@@ -147,7 +164,7 @@ public class PassiveLocationLogger extends Service implements LocationListener{
             if (locationManager != null) {
                 location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 if (location != null) {
-                    Log.e("Loc", "Lat:"+location.getLongitude() + ",Lon:"+location.getLatitude());
+                    Log.d("Loc", "Lat:"+location.getLongitude() + ",Lon:"+location.getLatitude());
 
                     //Insert location Data into SQLite DB
                     saveLocation(this, location);
@@ -169,4 +186,3 @@ public class PassiveLocationLogger extends Service implements LocationListener{
     }
 
 }
-
