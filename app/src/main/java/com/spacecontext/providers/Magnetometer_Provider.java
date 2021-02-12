@@ -10,10 +10,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.provider.BaseColumns;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.spacecontext.util.DatabaseHelper;
+
+import static android.content.ContentResolver.NOTIFY_DELETE;
+import static android.content.ContentResolver.NOTIFY_INSERT;
+import static android.content.ContentResolver.NOTIFY_UPDATE;
 
 public class Magnetometer_Provider extends ContentProvider {
     public static String AUTHORITY = "com.spacecontext.provider.magnetometer";
@@ -89,7 +93,7 @@ public class Magnetometer_Provider extends ContentProvider {
                 long magnetData_id = database.insertWithOnConflict(DATABASE_TABLES[0], null, values, SQLiteDatabase.CONFLICT_IGNORE);
                 if (magnetData_id > 0) {
                     Uri magnetDataUri = ContentUris.withAppendedId(Magnetometer_Data.CONTENT_URI, magnetData_id);
-                    getContext().getContentResolver().notifyChange(magnetDataUri, null, false);
+                    getContext().getContentResolver().notifyChange(magnetDataUri, null, NOTIFY_INSERT);
                     database.setTransactionSuccessful();
                     database.endTransaction();
                     return magnetDataUri;
@@ -118,7 +122,7 @@ public class Magnetometer_Provider extends ContentProvider {
         database.setTransactionSuccessful();
         database.endTransaction();
 
-        getContext().getContentResolver().notifyChange(uri, null, false);
+        getContext().getContentResolver().notifyChange(uri, null, NOTIFY_DELETE);
 
         return count;
     }
@@ -137,7 +141,7 @@ public class Magnetometer_Provider extends ContentProvider {
         }
         database.setTransactionSuccessful();
         database.endTransaction();
-        getContext().getContentResolver().notifyChange(uri, null, false);
+        getContext().getContentResolver().notifyChange(uri, null, NOTIFY_UPDATE);
 
         return count;
     }

@@ -16,11 +16,10 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Binder;
-import android.os.Bundle;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NotificationCompat;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -36,14 +35,10 @@ public class PassiveLocationLogger extends Service implements LocationListener{
     private boolean isNetworkEnable = false;
     private LocationManager locationManager;
     private Location location;
-    private Context mContext;
 
     // This is the object that receives interactions from clients.
     private final IBinder mBinder = new LocalBinder();
 
-//    public PassiveLocationLogger(Context mContext){
-//        this.mContext = mContext;
-//    }
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -62,12 +57,6 @@ public class PassiveLocationLogger extends Service implements LocationListener{
     }
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-        //this.mContext = getApplicationContext();
-    }
-
-    @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -77,6 +66,7 @@ public class PassiveLocationLogger extends Service implements LocationListener{
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
                 0, notificationIntent, 0);
+
         Notification notification = new NotificationCompat.Builder(this, NotificationChannelApp.CHANNEL_ID)
                 .setContentTitle("Example Service")
                 .setContentText(input)
@@ -90,11 +80,6 @@ public class PassiveLocationLogger extends Service implements LocationListener{
 
     @Override
     public void onLocationChanged(Location location) {
-
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
 
     }
 

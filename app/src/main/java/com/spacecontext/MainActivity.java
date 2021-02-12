@@ -26,7 +26,8 @@ import android.content.pm.ActivityInfo;
 
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -127,22 +128,6 @@ public class MainActivity extends AppCompatActivity {
         registerReceiver(envBCastReceiver, envFilter);
     }
 
-    /**
-     * Listeners for the sensors are registered in this callback so that
-     * they can be unregistered in onStop().
-     */
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -197,4 +182,5 @@ public class MainActivity extends AppCompatActivity {
     public void getPassiveLocation(View view) {
         locationLogger.getLatestLocation(MainActivity.this);
     }
+
 }

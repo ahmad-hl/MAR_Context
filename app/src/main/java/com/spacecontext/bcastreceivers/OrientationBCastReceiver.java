@@ -12,8 +12,6 @@ import com.spacecontext.util.Constants;
 import com.spacecontext.providers.Orientation_Provider;
 import com.spacecontext.providers.Orientation_Provider.Orientation_Data;
 
-import android.util.Log;
-
 public class OrientationBCastReceiver extends BroadcastReceiver {
     public static String TAG = "VSpaceContext::OrientationBCastReceiver";
 
@@ -45,7 +43,7 @@ public class OrientationBCastReceiver extends BroadcastReceiver {
         boolean rotationOK = SensorManager.getRotationMatrix(rotationMatrix,
                 null, mAccelerometerData, mMagnetometerData);
 
-        float orientationValues[] = new float[3];
+        float[] orientationValues = new float[3];
         if (rotationOK) {
             SensorManager.getOrientation(rotationMatrix, orientationValues);
 
@@ -61,7 +59,7 @@ public class OrientationBCastReceiver extends BroadcastReceiver {
 
             // Insert the new row, returning the primary key value of the new row
             Uri orientDataUri = context.getContentResolver().insert(Orientation_Data.CONTENT_URI, values);
-            Log.d(TAG, "Orientation is saved  to " + orientDataUri.toString());
+            //Log.d(TAG, "Orientation is saved  to " + orientDataUri.toString());
         }
     }
 }

@@ -27,7 +27,7 @@ limitations under the License. -->
 
     <!-- Strings used for location -->
     <string name="location_reason">this is message location</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="allow_location_permission">Allowing access to your location help to improve application features.\n\nWe promise not to spam you, provide value and only use it for your own good.</string>
     <string name="location_permission_allowed">If you want to disable location permission for \"Compass\", access to your application settings and disable it.</string>
@@ -38,5 +38,7 @@ limitations under the License. -->
     <string name="notification_title">Start Location Service</string>
     <string name="notification_message">Started Location Service</string>
     <string name="ticker_text">Ticker Text</string>
+    <string name="channel_name">Compass</string>
+    <string name="channel_description">Notification Channel for Compass</string>
 
 </resources>

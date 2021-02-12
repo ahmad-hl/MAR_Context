@@ -15,6 +15,7 @@ limitations under the License. -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.spacecontext">
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -26,7 +27,8 @@ limitations under the License. -->
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:name="com.spacecontext.services.NotificationChannelApp">
         <activity android:name="com.spacecontext.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

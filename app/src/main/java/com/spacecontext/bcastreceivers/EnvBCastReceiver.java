@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.spacecontext.util.Constants;
 import com.spacecontext.providers.Environment_Provider.Environment_Data;
@@ -55,6 +54,6 @@ public class EnvBCastReceiver extends BroadcastReceiver {
 
         // Insert the new row, returning the primary key value of the new row
         Uri envDataUri = context.getContentResolver().insert(Environment_Data.CONTENT_URI, values);
-        Log.d(TAG, "Environment is saved  to " + envDataUri.toString());
+        //Log.d(TAG, "Environment is saved  to " + envDataUri.toString());
     }
 }

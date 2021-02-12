@@ -11,9 +11,9 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
-import android.util.Log;
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+
 import android.widget.Toast;
 
 import com.spacecontext.util.Constants;
@@ -35,12 +35,6 @@ public class AccelerationLogger extends Service implements SensorEventListener {
     private long mLastShakeTime;
 
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-    }
-
-
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -60,7 +54,7 @@ public class AccelerationLogger extends Service implements SensorEventListener {
                 double acceleration = Math.sqrt(Math.pow(x, 2) +
                         Math.pow(y, 2) +
                         Math.pow(z, 2)) - SensorManager.GRAVITY_EARTH;
-                Log.d("mySensor", "Acceleration is " + acceleration + "m/s^2");
+                //Log.d("mySensor", "Acceleration is " + acceleration + "m/s^2");
 
                 if (acceleration > SHAKE_THRESHOLD) {
                     mLastShakeTime = curTime;
@@ -78,7 +72,7 @@ public class AccelerationLogger extends Service implements SensorEventListener {
 
                     // Insert the new row, returning the primary key value of the new row
                     Uri accelDataUri = getContentResolver().insert(Accelerometer_Provider.Accelerometer_Data.CONTENT_URI,values );
-                    Log.d("mySensor", "Acceleration is saved  to " + accelDataUri.toString());
+                    //Log.d("mySensor", "Acceleration is saved  to " + accelDataUri.toString());
 
                     Intent accelData = new Intent(Constants.ACTION_CONTEXT_ORIENTATION);
                     accelData.putExtra("type",Constants.ACCEL_DATA);

@@ -10,10 +10,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.provider.BaseColumns;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.spacecontext.util.DatabaseHelper;
+
+import static android.content.ContentResolver.NOTIFY_DELETE;
+import static android.content.ContentResolver.NOTIFY_INSERT;
+import static android.content.ContentResolver.NOTIFY_UPDATE;
 
 public class Orientation_Provider extends ContentProvider {
     public static String AUTHORITY = "com.spacecontext.provider.orientation";
@@ -90,7 +94,7 @@ public class Orientation_Provider extends ContentProvider {
                 long orientData_id = database.insertWithOnConflict(DATABASE_TABLES[0], null, values, SQLiteDatabase.CONFLICT_IGNORE);
                 if (orientData_id > 0) {
                     Uri orientDataUri = ContentUris.withAppendedId(Orientation_Data.CONTENT_URI, orientData_id);
-                    getContext().getContentResolver().notifyChange(orientDataUri, null, false);
+                    getContext().getContentResolver().notifyChange(orientDataUri, null, NOTIFY_INSERT);
                     database.setTransactionSuccessful();
                     database.endTransaction();
                     return orientDataUri;
@@ -119,7 +123,7 @@ public class Orientation_Provider extends ContentProvider {
         database.setTransactionSuccessful();
         database.endTransaction();
 
-        getContext().getContentResolver().notifyChange(uri, null, false);
+        getContext().getContentResolver().notifyChange(uri, null, NOTIFY_DELETE);
 
         return count;
     }
@@ -138,7 +142,7 @@ public class Orientation_Provider extends ContentProvider {
         }
         database.setTransactionSuccessful();
         database.endTransaction();
-        getContext().getContentResolver().notifyChange(uri, null, false);
+        getContext().getContentResolver().notifyChange(uri, null, NOTIFY_UPDATE);
 
         return count;
     }

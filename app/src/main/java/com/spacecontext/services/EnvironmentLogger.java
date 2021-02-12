@@ -9,8 +9,8 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 import android.widget.Toast;
 
 import com.spacecontext.util.Constants;
@@ -27,11 +27,6 @@ public class EnvironmentLogger extends Service implements SensorEventListener {
     private Sensor mSensorTemp;
     private Sensor mSensorHumidity;
     private Sensor mSensorLight;
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-    }
 
 
     @Nullable

@@ -11,9 +11,9 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
-import android.util.Log;
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+
 import android.widget.Toast;
 
 import com.spacecontext.MainActivity;
@@ -31,12 +31,6 @@ public class GyroscopeLogger extends Service implements SensorEventListener {
     private static final float SHAKE_THRESHOLD = 15.00f; // m/S**2
     private static final int MIN_TIME_BETWEEN_SHAKES_MILLISECS = 1000;
     private long mLastShakeTime;
-
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-    }
 
 
     @Nullable
@@ -58,7 +52,7 @@ public class GyroscopeLogger extends Service implements SensorEventListener {
                 double gyroscope = Math.sqrt(Math.pow(x, 2) +
                         Math.pow(y, 2) +
                         Math.pow(z, 2)) - SensorManager.GRAVITY_EARTH;
-                Log.d("mySensor", " Gyroscope is " + gyroscope + "m/s^2");
+                //Log.d("mySensor", " Gyroscope is " + gyroscope + "m/s^2");
 
                 if (gyroscope > SHAKE_THRESHOLD) {
                     mLastShakeTime = curTime;
@@ -75,7 +69,7 @@ public class GyroscopeLogger extends Service implements SensorEventListener {
 
                 // Insert the new row, returning the primary key value of the new row
                 Uri gyroDataUri = getContentResolver().insert(Gyroscope_Data.CONTENT_URI,values );
-                Log.d("mySensor", "Gyroscope is saved  to " + gyroDataUri.toString());
+                //Log.d("mySensor", "Gyroscope is saved  to " + gyroDataUri.toString());
             }
         }
     }

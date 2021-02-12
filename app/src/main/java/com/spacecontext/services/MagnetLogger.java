@@ -11,9 +11,9 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
-import android.util.Log;
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+
 import android.widget.Toast;
 
 import com.spacecontext.util.Constants;
@@ -32,12 +32,6 @@ public class MagnetLogger extends Service implements SensorEventListener {
     private static final float SHAKE_THRESHOLD = 15.00f; // m/S**2
     private static final int MIN_TIME_BETWEEN_SHAKES_MILLISECS = 1000;
     private long mLastShakeTime;
-
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-    }
 
 
     @Nullable
@@ -59,7 +53,7 @@ public class MagnetLogger extends Service implements SensorEventListener {
                 double magnet = Math.sqrt(Math.pow(x, 2) +
                         Math.pow(y, 2) +
                         Math.pow(z, 2)) - SensorManager.GRAVITY_EARTH;
-                Log.d("mySensor", "Magnet is " + magnet + "m/s^2");
+                //Log.d("mySensor", "Magnet is " + magnet + "m/s^2");
                 float[] mMagnetometerData  = sensorEvent.values.clone();
 
                 //Insert orientation Data into SQLite DB
@@ -71,7 +65,7 @@ public class MagnetLogger extends Service implements SensorEventListener {
 
                 // Insert the new row, returning the primary key value of the new row
                 Uri magnetDataUri = getContentResolver().insert(Magnetometer_Data.CONTENT_URI,values );
-                Log.d("mySensor", "Magnet field is saved  to " + magnetDataUri.toString());
+                //Log.d("mySensor", "Magnet field is saved  to " + magnetDataUri.toString());
 
                 Intent magnetData = new Intent(Constants.ACTION_CONTEXT_ORIENTATION);
                 magnetData.putExtra("type",Constants.MAGNET_DATA);

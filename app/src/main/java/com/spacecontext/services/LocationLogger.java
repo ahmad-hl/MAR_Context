@@ -17,10 +17,11 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NotificationCompat;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
 import android.widget.Toast;
+import android.util.Log;
 
 import com.spacecontext.MainActivity;
 import com.spacecontext.R;
@@ -33,11 +34,6 @@ public class LocationLogger extends Service implements LocationListener {
     private final static int REQUEST_CHECK_GOOGLE_SETTINGS = 0x99;
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-    }
-
-        @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -56,11 +52,6 @@ public class LocationLogger extends Service implements LocationListener {
         startForeground(1, notification);
 
         return START_NOT_STICKY;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
     }
 
     /**
@@ -160,6 +151,8 @@ public class LocationLogger extends Service implements LocationListener {
             }
         }
 
+        Log.d("mySensor", "Location is " + bestLocation);
+
         Uri locUri  = saveLocation(bestLocation);
         Toast.makeText(this, locUri.toString(),Toast.LENGTH_LONG).show();
     }
@@ -206,6 +199,7 @@ public class LocationLogger extends Service implements LocationListener {
         rowData.put(Location_Data.ACCURACY, bestLocation.getAccuracy());
         try {
             idURI = getContentResolver().insert(Location_Data.CONTENT_URI, rowData);
+            Log.d("mySensor", "Location is saved to " + idURI.toString());
 //            if (awareSensor != null) awareSensor.onLocationChanged(rowData);
 
         } catch (SQLiteException e) {

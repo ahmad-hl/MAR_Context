@@ -17,6 +17,10 @@ import com.spacecontext.util.DatabaseHelper;
 
 import java.util.HashMap;
 
+import static android.content.ContentResolver.NOTIFY_DELETE;
+import static android.content.ContentResolver.NOTIFY_INSERT;
+import static android.content.ContentResolver.NOTIFY_UPDATE;
+
 /**
  * AWARE Locations Content Provider Allows you to access all the recorded
  * locations on the database Database is located at the SDCard :
@@ -117,7 +121,7 @@ public class Location_Provider extends ContentProvider {
         database.setTransactionSuccessful();
         database.endTransaction();
 
-        getContext().getContentResolver().notifyChange(uri, null, false);
+        getContext().getContentResolver().notifyChange(uri, null, NOTIFY_DELETE);
         return count;
     }
 
@@ -154,7 +158,7 @@ public class Location_Provider extends ContentProvider {
                 if (location_id > 0) {
                     Uri locationUri = ContentUris.withAppendedId(
                             Location_Data.CONTENT_URI, location_id);
-                    getContext().getContentResolver().notifyChange(locationUri, null, false);
+                    getContext().getContentResolver().notifyChange(locationUri, null, NOTIFY_INSERT);
                     return locationUri;
                 }
                 database.endTransaction();
@@ -241,7 +245,7 @@ public class Location_Provider extends ContentProvider {
         database.setTransactionSuccessful();
         database.endTransaction();
 
-        getContext().getContentResolver().notifyChange(uri, null, false);
+        getContext().getContentResolver().notifyChange(uri, null, NOTIFY_UPDATE);
         return count;
     }
 }
